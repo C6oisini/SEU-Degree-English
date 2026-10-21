@@ -1,0 +1,138 @@
+\documentclass[]{uiuc_paper}
+\pdfoutput=1
+% single-column (default): \documentclass[]{uiuc_paper}
+% two-column: \documentclass[twocolumn]{uiuc_paper}
+
+%% =====================================================================
+%%  七部分结构 —— 与分工表一一对应
+%%
+%%   1  Introduction        sections/01-introduction.tex        成员 1
+%%   2  Literature Review   sections/02-literature-review.tex    成员 2
+%%   3  Methodology         sections/03-methodology.tex          成员 3
+%%   4  Results             sections/04-results.tex              成员 4
+%%   5  Discussion          sections/05-discussion.tex           成员 5
+%%   6  Conclusion          sections/06-conclusion.tex           成员 6
+%%   7  Abstract + 统稿     sections/00-abstract.tex             成员 7
+%%
+%%  编译：latexmk -pdf paper.tex        （改动后重跑，让 \ref 收敛）
+%%  清理：latexmk -C paper.tex
+%%  说明：第 7 部分是摘要 + 全文统稿，摘要排版在标题页的摘要框里，
+%%        所以正文编号是 1--6，摘要不再单列一节。
+%%  页眉校徽：uiuc_paper.cls 里的 \headerlogo（默认 figs/seu-logo.png）；
+%%        要换图，改那一行，或在导言区 \renewcommand{\headerlogo}{figs/xxx}
+%% =====================================================================
+
+\usepackage[toc,page,header]{appendix}
+\usepackage{cleveref}
+\usepackage{subcaption}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{colortbl}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{inconsolata}
+\usepackage{needspace}
+
+\input{macro}
+
+% ======== 方法名 ========
+% 全文统一用 \method 指代自己的方法，避免同一个名字出现多种写法
+\newcommand{\method}{MethodName\xspace}
+
+% ======== 配色（与 figs/ 里的图保持一致）=======
+% navy = 本文方法，blues = 对比/基线，pink = 反例
+\definecolor{cnavy}{HTML}{2F4A6D}
+\definecolor{cbluedeep}{HTML}{506684}
+\definecolor{cbluemid}{HTML}{8797B0}
+\definecolor{cbluesoft}{HTML}{B7C6DC}
+\definecolor{cice}{HTML}{DCE2EA}
+\definecolor{cpink}{HTML}{DCC2BE}
+\definecolor{cink}{HTML}{2B3F5B}
+\definecolor{crose}{HTML}{A47C7A}
+\colorlet{oursrow}{cbluesoft!28}   % 表格里本文方法那一行的底色
+
+% ======== 参考文献开关 ========
+% 正文里第一次出现 \citep{...} 之后，把下面这行的 false 改成 true
+% （不改成 true 时不会生成 References 页，避免空页面）
+\newif\ifshowbib
+\showbibfalse
+
+%% =====================================================================
+%%  格式约定（成员 4/7 尤其注意，保持全文一致）
+%%    · 图表标题：\caption{\textbf{一句话结论.} 设置、指标口径、平均了几次}
+%%    · 表格：booktabs 三线表，\centering\small，\tabcolsep 4.8--8pt
+%%    · 正文引用图表用 Figure~\ref{} / Table~\ref{}；引用文献用 \citep{}
+%%    · 未完成的段落用 \todo{...} 标记，交稿前全局搜索 "TODO" 清理
+%% =====================================================================
+
+% ======== 标题 ========
+% 填你们论文的题目；术语大小写由成员 7 最后统一
+\title{Paper Title}
+
+% ======== 作者 ========
+% 七位成员各一行；方括号里的数字对应下方 \affiliation 的编号
+\author[1]{Member 1}
+\author[1]{Member 2}
+\author[1]{Member 3}
+\author[1]{Member 4}
+\author[1]{Member 5}
+\author[1]{Member 6}
+\author[1]{Member 7}
+
+% ======== 单位 ========
+\affiliation[1]{Institution or Laboratory}
+
+% ======== 贡献标注（可选）=======
+% \contribution[*]{Equal contribution}
+
+% ======== 摘要：第 7 部分 ========
+\abstract{\input{sections/00-abstract}}
+
+% ======== 元信息 ========
+\date{\today}
+\correspondence{\email{name@example.com}}
+
+\begin{document}
+
+% ======== 定理环境（按需使用）=======
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{assumption}[theorem]{Assumption}
+\newtheorem{remark}[theorem]{Remark}
+
+\maketitle
+
+%% ---- 正文：六个部分，一人一个文件 ----
+\input{sections/01-introduction}
+\input{sections/02-literature-review}
+\input{sections/03-methodology}
+\input{sections/04-results}
+\input{sections/05-discussion}
+\input{sections/06-conclusion}
+
+\ifshowbib
+  \clearpage
+  \bibliographystyle{unsrtnat}
+  \bibliography{main}
+\fi
+
+%% ---- 需要附录时解除注释（证明、完整协议、额外表格）----
+% \clearpage
+% \appendix
+% \input{sections/07-appendix}
+
+%% =====================================================================
+%%  成员 7：统稿检查清单（交稿前逐条过一遍）
+%%   [ ] 七个部分齐全，章节编号连续，没有人漏交
+%%   [ ] 编译日志里没有 "??"（\ref / \citep 全部解析）
+%%   [ ] 图表标题格式统一：\textbf{结论句.} + 设置 + 指标口径
+%%   [ ] 术语、缩写、\method 写法全文一致；摘要里也统一
+%%   [ ] 正文 \citep 与 main.bib 一一对应，没有缺项也没有多余条目
+%%   [ ] 参考文献按出现顺序（unsrtnat），作者名/年份/会议名核对过
+%%   [ ] \todo 全部清空；页边距、字号未被局部改动
+%% =====================================================================
+
+\end{document}

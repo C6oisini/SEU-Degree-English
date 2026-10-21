@@ -1,0 +1,37 @@
+% ======== Standard Packages ========
+\usepackage{latexsym}
+\usepackage{url}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage[utf8]{inputenc}
+\usepackage{booktabs}
+\usepackage{pifont}
+\usepackage{multirow}
+\usepackage{makecell}
+\usepackage{paralist}
+\usepackage{xspace}
+\usepackage{adjustbox}
+
+% ======== Common Macros ========
+\newcommand{\todo}[1]{\textcolor{red}{{[$\blacksquare$ TODO: #1]}}}
+\newcommand{\ie}{\textit{i.e.}\xspace}
+\newcommand{\eg}{\textit{e.g.}\xspace}
+\newcommand{\wo}{\textit{w/o}\xspace}
+\newcommand{\etc}{\textit{etc.}\xspace}
+\newcommand{\dq}[1]{``#1''}
+\newcommand{\sq}[1]{`#1'}
+\newcommand{\cmark}{\ding{51}}
+\newcommand{\xmark}{\ding{55}}
+
+% ======== Author Comment Macros (remove for camera-ready) ========
+\newcommand{\jj}[1]{\textcolor{cyan}{\small{\bf [JJ: #1]}}}
+% \newcommand{\coauthor}[1]{\textcolor{blue}{{[Coauthor: #1]}}}
+
+% ======== Footnote without number ========
+\newcommand\footnoteplain[1]{%
+  \begingroup
+  \renewcommand\thefootnote{}\footnote{#1}%
+  \addtocounter{footnote}{-1}%
+  \endgroup
+}

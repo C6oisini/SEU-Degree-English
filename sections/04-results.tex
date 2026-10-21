@@ -1,0 +1,44 @@
+%% =====================================================================
+%%  4 / 7   Results  结果                                        成员 4
+%%  主要任务：呈现真实得到的结果
+%%    a. 只放测到的数字（准确率/分数/耗时…），解释留给第 5 部分
+%%    b. 主结果：一张表 + 一张图，正文里每张表/图都要被 \ref 引用一次
+%%    c. 消融 / 敏感性 / 个案分析各放一个 \subsection
+%%  篇幅建议：2--3 页；表格用 booktabs + \small，列间距 \tabcolsep 4.8--8pt
+%% =====================================================================
+\section{Results}
+\label{sec:results}
+
+\todo{PART 4 --- Results (Member 4): report what was actually measured, in tables and figures, without interpretation.}
+
+% ---- 主结果表模板（换成你们的数据）----
+%
+% \begin{table}[t]
+% \centering\small
+% \setlength{\tabcolsep}{6pt}
+% \begin{tabular}{@{}lccc@{}}
+% \toprule
+% Method & Metric A & Metric B & Metric C \\
+% \midrule
+% Baseline            & 00.0 & 00.0 & 00.0 \\
+% \rowcolor{oursrow}[\tabcolsep][\tabcolsep]Ours & 00.0 & 00.0 & 00.0 \\
+% \bottomrule
+% \end{tabular}
+% \caption{\textbf{One-sentence takeaway of the table.} Setting, metric
+% definition, and how many runs are averaged. Best value per column in bold.}
+% \label{tab:main}
+% \end{table}
+
+% ---- 建议小节 ----
+%
+% \subsection{Main Results}
+% \label{sec:main}
+% 先给结论句，再指向 Table~\ref{tab:main} 和对应的图。
+%
+% \subsection{Ablation Study}
+% \label{sec:ablations}
+% 每次只改一个因素，逐行累加时在表格里用 "+" 标记。
+%
+% \subsection{Case Study}
+% \label{sec:cases}
+% 一个成功、一个失败，各引一小段原文/日志。

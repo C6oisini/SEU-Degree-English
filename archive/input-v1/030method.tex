@@ -1,0 +1,143 @@
+\section{Method}
+\label{sec:method}
+
+\subsection{Distillation of one layer is least squares}
+\label{sec:objective}
+
+Let $\theta_{\mathrm{b}}$ be a base model and $\theta_1,\dots,\theta_K$
+specialists post-trained from it, one per domain; we call them teachers, and
+the model we construct, $\theta_\star$, the student. All share an architecture.
+Consider a linear layer with base weight $\Wb\in\mathbb{R}^{m\times n}$ and
+teacher weights $W_d=\Wb+\dd_d$. Let $\mu_d$ be the distribution of the input
+$x\in\mathbb{R}^n$ this layer receives inside teacher $d$, to be specified in
+Section~\ref{sec:stats}. We ask the student's layer to reproduce each teacher's
+output on that teacher's inputs,
+\begin{equation}
+W_\star=\arg\min_{W}\ \sum_{d=1}^{K} w_d\,\mathbb{E}_{x\sim\mu_d}\big\|Wx-W_dx\big\|_2^2 ,
+\label{eq:obj}
+\end{equation}
+with domain weights $w_d>0$. This is the distillation objective restricted to
+one layer, with the teacher's activations as inputs. It is quadratic in $W$
+and depends on $\mu_d$ only through the second moment
+$G_d=\mathbb{E}_{x\sim\mu_d}[xx^{\!\top}]$. Setting the gradient to zero gives
+$W_\star\sum_d w_dG_d=\sum_d w_dW_dG_d$, and since the base weight cancels,
+\begin{equation}
+W_\star=\Wb+\Big(\sum_{d}\dd_d\,\Gt_d\Big)\Big(\sum_{d}\Gt_d\Big)^{-1},
+\label{eq:solve}
+\end{equation}
+where $\Gt_d=w_dG_d$. This is the RegMean solution \citep{jin2023regmean}
+written for updates. Following that work we shrink off-diagonal second moments,
+\begin{equation}
+\Gt_d=w_d\big[\alpha\,G_d+(1-\alpha)\,\mathrm{diag}(G_d)\big],\qquad \alpha=0.9,
+\label{eq:shrink}
+\end{equation}
+which makes the system well conditioned and is equivalent to adding a
+per-coordinate penalty that pulls $W$ toward each teacher
+(Appendix~\ref{app:derivation}).
+
+Equation~\eqref{eq:solve} makes the contrast with weight arithmetic explicit.
+Task arithmetic sets the update to $\sum_d\dd_d$ and so applies every
+teacher's update to every input, including inputs that only another teacher
+ever sees; on teacher $e$'s inputs the layer output is off by
+$\sum_{d\ne e}\dd_dx$. \method minimizes exactly that error, weighted by how
+often each input direction occurs. Three properties of the solution locate
+where teachers can conflict.
+
+\begin{proposition}
+\label{prop:conflict}
+Let $\dd_\star=W_\star-\Wb$ solve Equation~\eqref{eq:solve} with
+$\Gt_d=w_dG_d$.
+\begin{enumerate}
+\item[(i)] If $G_d=G$ is invertible for all $d$, then
+$\dd_\star=\sum_dw_d\dd_d/\sum_dw_d$.
+\item[(ii)] If $G_e$ is invertible and $w_d/w_e\to0$ for all $d\ne e$, then
+$\dd_\star\to\dd_e$.
+\item[(iii)] If the ranges of $G_1,\dots,G_K$ are mutually orthogonal and the
+inverse is taken as the pseudo-inverse, then $\dd_\star x=\dd_ex$ for every
+$x$ in the range of $G_e$ and every $e$.
+\end{enumerate}
+\end{proposition}
+
+Appendix~\ref{app:derivation} gives the proofs. By (i), the closed form reduces
+to weight averaging, not to task arithmetic, when the teachers cannot be told
+apart by their inputs. By (iii), interference arises only where input
+distributions overlap; Equation~\eqref{eq:diag} below measures how much.
+
+\subsection{On-policy statistics}
+\label{sec:stats}
+
+The solution is only as good as $\mu_d$. We take $\mu_d$ to be the distribution
+of layer inputs when teacher $d$ processes its own answers to problems from
+its domain. This is the distribution the layer operates on in use, since a
+reasoning model's context is dominated by its own generation, and it cannot be
+obtained from reference solutions, which the model did not write. We refer to
+statistics gathered on model-generated rollouts as on-policy, in contrast to
+statistics gathered on a fixed corpus; the rollouts in our main configuration
+are the teachers', as in sequence-level distillation \citep{kim2016sequence},
+and Section~\ref{sec:ablations} evaluates the variant that uses the student's.
+
+Concretely, teacher $d$ answers a set of training problems from its domain,
+sampled exactly as in evaluation. After selection
+(Section~\ref{sec:selection}), the teacher reads each kept sequence, prompt
+and answer, in a single teacher-forced forward pass. A forward pre-hook on
+every linear layer of every decoder block accumulates $X^{\!\top}X$ over all
+token positions, and $G_d$ is that sum divided by the number of tokens, so
+that domains with longer answers do not dominate by length. Layers that read
+the same tensor share a Gram matrix: in the architectures we use, the query,
+key and value projections form one group, the gate and up projections another,
+and the attention output and down projections one each. The grouping is
+detected automatically from one short forward pass, and the same statistics
+are collected for the final hidden states to solve the output head.
+
+\subsection{Solving}
+\label{sec:solve}
+
+For each group, Equation~\eqref{eq:solve} is solved once per member layer in
+double precision. Tensors that are not linear maps of a hidden state ---
+embeddings, normalization gains and biases --- change little and are combined
+by task arithmetic. Besides the fused model, the solve returns for every layer
+and teacher the share of that teacher's update left unreproduced,
+\begin{equation}
+\varepsilon_d=\frac{\tr\!\big[(\dd_\star-\dd_d)\,\Gt_d\,(\dd_\star-\dd_d)^{\!\top}\big]}
+{\tr\!\big[\dd_d\,\Gt_d\,\dd_d^{\!\top}\big]},
+\label{eq:diag}
+\end{equation}
+with $\Gt_d$ of Equation~\eqref{eq:shrink}. It is zero when the fused layer
+matches the teacher on its inputs, and it locates the layers where the
+teachers compete. Figure~\ref{fig:overview} illustrates the procedure, and
+Algorithm~\ref{alg:main} in Appendix~\ref{app:eval} states it in full.
+
+\subsection{Which rollouts to use}
+\label{sec:selection}
+
+Every token of every kept answer contributes one outer product to $G_d$, so
+the statistics are a token-weighted picture of the teacher's behavior. That
+picture is distorted by a failure mode of long-form generation. Some answers
+do not terminate: the model enters a repetition loop and continues to the
+length limit. Such answers are few, but each is as long as the limit allows,
+and the layer inputs inside a loop are nearly periodic, so their contribution
+to the Gram matrix is large and concentrated on a few directions. The
+least-squares solution then spends its capacity reproducing the teacher on
+degenerate input.
+
+We detect loops without supervision from the compressibility of the text: an
+answer is flagged when the last 20{,}000 characters compress, under DEFLATE, to
+less than 5\% of their length, far below ordinary reasoning text. Our default
+selection keeps answers that finished on their own and are not flagged. Where
+answers can be graded automatically, we additionally keep only correct ones:
+mathematics answers are checked against the reference answer, and code
+answers are run against the tests of their problem.
+
+\subsection{Precision}
+\label{sec:precision}
+
+Released checkpoints are stored in bfloat16, which keeps eight significant
+bits. Reinforcement learning with small learning rates barely moves weights at
+that resolution, by about one representable step
+(Section~\ref{sec:exp-precision}). A fused update is no larger, and unlike a
+specialist's it is not made of whole steps. We therefore store fused models
+in 32-bit floats, since rounding the fused update to bfloat16 measurably
+distorts it. A fused model is evaluated in float16, which keeps three more
+significant bits than bfloat16 and fits the memory of a single GPU where
+float32 does not. A format change by itself shifts measured accuracy, so we
+state the format behind every score.

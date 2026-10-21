@@ -1,0 +1,92 @@
+\documentclass[]{uiuc_paper}
+\pdfoutput=1
+% single-column (default): \documentclass[]{uiuc_paper}
+% two-column: \documentclass[twocolumn]{uiuc_paper}
+
+\usepackage[toc,page,header]{appendix}
+\usepackage{minitoc}
+\usepackage{cleveref}
+\usepackage{subcaption}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{colortbl}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{inconsolata}
+\usepackage{needspace}
+
+\input{macro}
+
+% ======== Method name ========
+\newcommand{\method}{TF-OPD\xspace}
+
+% ======== Palette (identical to the figures) ========
+% navy = the proposed method, blues = source models, pink = contrast.
+\definecolor{cnavy}{HTML}{2F4A6D}
+\definecolor{cbluedeep}{HTML}{506684}
+\definecolor{cbluemid}{HTML}{8797B0}
+\definecolor{cbluesoft}{HTML}{B7C6DC}
+\definecolor{cice}{HTML}{DCE2EA}
+\definecolor{cpink}{HTML}{DCC2BE}
+\definecolor{cink}{HTML}{2B3F5B}
+\definecolor{crose}{HTML}{A47C7A}
+\colorlet{oursrow}{cbluesoft!28}
+
+% ======== Notation ========
+\newcommand{\dd}{\Delta}
+\newcommand{\Gt}{\widetilde{G}}
+\newcommand{\Wb}{W_{\mathrm{b}}}
+\newcommand{\tr}{\operatorname{tr}}
+
+% ======== Title ========
+\title{Training-Free On-Policy Distillation}
+
+% ======== Authors ========
+\author[1,*]{Bangji Yang}
+\author[1,*]{Jiajun Fan}
+\author[1]{Zhaoyu Zhu}
+\author[2]{Hongbo Ma}
+\author[1,\textdagger]{Ge Liu}
+
+% ======== Affiliations ========
+\affiliation[1]{University of Illinois at Urbana-Champaign}
+\affiliation[2]{Tsinghua University}
+
+\contribution[*]{Equal contribution}
+\contribution[\textdagger]{Corresponding author}
+
+% ======== Abstract ========
+\abstract{\input{input/000abstract}}
+
+% ======== Metadata ========
+\date{\today}
+\correspondence{\email{geliu@illinois.edu}}
+
+\begin{document}
+
+% ======== Theorem environments ========
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{assumption}[theorem]{Assumption}
+\newtheorem{remark}[theorem]{Remark}
+
+\maketitle
+
+\input{input/010intro}
+\input{input/020related}
+\input{input/030method}
+\input{input/040experiments}
+\input{input/050conclusion}
+
+\clearpage
+\bibliographystyle{unsrtnat}
+\bibliography{main}
+
+\clearpage
+\appendix
+\input{input/060appendix}
+
+\end{document}
