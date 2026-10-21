@@ -1,5 +1,7 @@
 # 七部分 LaTeX 论文模板（Southeast University）
 
+[![build](https://github.com/C6oisini/SEU-Degree-English/actions/workflows/build.yml/badge.svg)](https://github.com/C6oisini/SEU-Degree-English/actions/workflows/build.yml)
+
 一个单栏 LaTeX 论文模板，按小组分工表的 **7 个部分**把正文拆成 7 个文件，一人一部分，互不冲突。当前是空骨架：只有标题、摘要框、各节标题和写作指引，正文留给各自成员填写。
 
 ![首页效果](docs/preview.png)
@@ -94,6 +96,18 @@ latexmk -C                 # 清理中间文件
 - 表格用 `booktabs`（`\toprule` / `\midrule` / `\bottomrule`），不要竖线；图用 `subcaption`。
 - 图表标题格式为 `\caption{\textbf{标签} 说明}`，`\textbf` 里的标签与正文引用保持一致。
 - 源码里的中文只出现在注释中：`pdflatex` 不能直接排版中文，正文一律英文。
+
+## 参与贡献
+
+公开仓库默认就是 **fork + PR** 模型，任何人都能参与，不需要谁给权限：
+
+1. 点右上角 **Fork**，克隆自己的 fork；
+2. 在自己 fork 里建分支（`git switch -c part-3-method`），随便推；
+3. 改完向本仓库 `main` 提 PR。
+
+只有被加进 Settings → Collaborators 的账号才有直接往本仓库推分支的权限，GitHub 没有更细的「允许陌生人推分支」开关。详细约定见 [CONTRIBUTING.md](CONTRIBUTING.md)。
+
+每个 PR 都会自动跑 `latexmk -pdf paper.tex`（见 `.github/workflows/build.yml`），编译不过的 PR 会被标红，编译产物可以在 Actions 的 artifact 里下载。
 
 ## 说明
 
