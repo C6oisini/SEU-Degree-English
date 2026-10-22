@@ -1,13 +1,6 @@
 %% =====================================================================
 %%  7 / 7   Abstract  摘要 + 全文统稿                           成员 7
-%%  主要任务：概括全文、统一格式与参考文献
-%%    摘要写法（150--250 词，五句话）：
-%%      ① 背景：这个方向现在在做什么
-%%      ② 空白：现有工作缺什么
-%%      ③ 做法：本文提出什么，一句话说清
-%%      ④ 结果：最硬的 1--2 个数字（数据集 + 指标 + 提升幅度）
-%%      ⑤ 结论：因此带来什么变化
-%%    统稿清单见 paper.tex 末尾的 TODO 注释块
+%%  五句话结构：背景 / 空白 / 做法 / 结果 / 结论
 %% =====================================================================
 
-\todo{PART 7 --- Abstract (Member 7): 150--250 words covering background, gap, method, main result and contribution; then harmonize format and references for the whole paper.}
+Medical artificial intelligence is moving from systems that recommend to systems that act. Large language model agents now plan, call tools and complete multi-step clinical tasks, yet they are evaluated almost exclusively on accuracy: the strongest public benchmark reports a success rate below 70\%. This paper asks what changes when the unit of analysis moves from the advice to the action. We conduct a purposive review of seventeen studies spanning engineering and human-factors work, and identify four themes --- deskilling, the supervision illusion, accountability diffusion, and trust under uncertainty --- which we show to be symptoms of a single missing object: an explicit authorization boundary. Existing frameworks describe how much autonomy a system has; none specifies what a delegation must contain. We propose \emph{governed delegation}, which requires four things of any agent permitted to act clinically: a stated scope of authority, revocability while the action is in flight, auditability afterwards, and retention of unaided human skill. We then specify a $2\times2$ vignette experiment that tests the advisor-to-agent shift directly. The human--AI relationship in medicine is less a question of trust than a question of who may act, and on whose authority.

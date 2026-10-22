@@ -1,27 +1,46 @@
 %% =====================================================================
 %%  5 / 7   Discussion  讨论                                    成员 5
-%%  主要任务：解释结果、对照、意义和局限
-%%    a. 机制：为什么会出现第 4 部分的结果（不只是复述数字）
-%%    b. 对照：与第 2 部分梳理的已有工作一致/不一致在哪，为什么
-%%    c. 意义：理论意义与实践意义各一句
-%%    d. 局限：数据、规模、评价方式、假设；说清这些局限对结论的威胁
-%%  篇幅建议：1.5--2 页；不要引入第 4 部分没有的新结果
 %% =====================================================================
 \section{Discussion}
 \label{sec:discussion}
 
-\todo{PART 5 --- Discussion (Member 5): explain the results, compare them with prior work, and state implications and limitations.}
+\paragraph{From accuracy to authority.}
+The four themes in Section~\ref{sec:results} are usually read as separate problems with separate literatures: deskilling belongs to medical education, the supervision illusion to human factors, accountability to law, trust to survey research. Read together, they describe one situation. A system that recommends leaves the act where it was, with the clinician, and only the information moves. A system that acts moves the act itself, and with it the location of authority. Everything the corpus reports follows from that relocation: skill decays because the act is no longer practised, oversight becomes auditing because the act has already happened, responsibility diffuses because no one assigned it when it was still assignable, and trust cannot calibrate because the boundary it would calibrate against was never drawn. The problem is not that the systems are insufficiently accurate. It is that they are accurate enough to be trusted with something whose terms were never settled.
 
-% ---- 写作骨架 ----
-%
-% \paragraph{Why the results look like this.}
-% 把第 4 部分的现象归因到 2--3 个机制上，每个机制给一句证据（可回引图表）。
-%
-% \paragraph{Relation to prior work.}
-% 与 \ref{sec:litreview} 中的主线逐条对照：哪里一致、哪里相反、差异来源。
-%
-% \paragraph{Implications.}
-% 对后续研究/工程实践各一句话，不要空泛。
-%
-% \paragraph{Limitations.}
-% 明确列出 2--4 条，并说明它们如何限制结论的适用范围。
+\paragraph{Governed delegation.}
+We therefore propose that any agent permitted to act clinically satisfy four requirements, which together we call \emph{governed delegation}:
+\begin{enumerate}
+  \item \emph{A stated scope.} The set of actions the agent may take is written down in advance, in clinical rather than statistical terms, and anything outside it requires a new authorization.
+  \item \emph{Revocability in flight.} The authorization can be withdrawn while the action is executing, and the agent must be able to stop in a state from which a human can resume.
+  \item \emph{Auditability afterwards.} The action leaves a record from which the decision can be reconstructed: what was proposed, what was accepted, what was executed, and by which version of the system.
+  \item \emph{Retention of the unaided skill.} The human must remain able to perform the task without the agent, and that ability must be periodically demonstrated rather than assumed.
+\end{enumerate}
+The four are conjunctive. An agent with a scope but no revocation is a scheduled accident; one with revocation but no audit trail is an unreviewable one; one with both but no retained skill leaves a human who cannot exercise the authority that the paperwork assigns them.
+
+\paragraph{Three frameworks compared.}
+Table~\ref{tab:frameworks} places governed delegation beside two existing approaches. Risk-based regulation, of the kind embodied in medical device rules and the European approach to high-risk AI, regulates the system: it classifies, requires conformity assessment and mandates post-market surveillance. It says a great deal about whether a system may be marketed and nothing about whether a particular action may be taken on a particular patient. The stance-based approach, which \citet{ong2026flight} adapt from aviation, regulates the pair: it assigns roles, writes procedures and rehearses them. This is closer to what is needed, but its unit is the relationship rather than the individual delegation, so it still does not say what a single authorization must contain. Governed delegation regulates the delegation itself, and is the only one of the three whose requirements can be checked at the moment of the act.
+
+\begin{table}[t]
+\centering\footnotesize
+\setlength{\tabcolsep}{5pt}
+\begin{tabular}{@{}p{3.6cm}p{2.9cm}p{4.3cm}p{3.8cm}@{}}
+\toprule
+Framework & Unit regulated & What it specifies & What it leaves out \\
+\midrule
+Risk-based regulation & The system & Risk class, conformity assessment, post-market surveillance & Whether this action may be taken on this patient \\
+Stance-based collaboration \citep{ong2026flight} & The human--machine pair & Roles, procedures, rehearsal & Scope of a single delegation, and its revocation \\
+Governed delegation (this paper) & The individual delegation & Scope, revocability, audit trail, skill floor & Cost of operating at scale \\
+\bottomrule
+\end{tabular}
+\caption{\textbf{Regulating the system, the pair, or the delegation.} The three frameworks answer different questions; only the third can be checked at the moment of the act.}
+\label{tab:frameworks}
+\end{table}
+
+\paragraph{Implications.}
+For education, the corollary of requirement four is that supervision be taught as a skill with assessment points, which is the direction \citet{abdulnour2025education} propose. For regulation, the corollary of requirement three is that deployment approval should require an audit schema rather than only a performance report. For design, the corollary of requirement two is that agents need an interruptible execution model, not merely a confirmation dialogue at the start; a confirmation given once, before a multi-step action, is a scope statement disguised as a check.
+
+\paragraph{Objections.}
+A first objection is that this is human oversight with more words. It is not, because oversight is a stance and delegation is a contract, and the clauses of a contract fail independently. An institution can have excellent oversight and still be unable to say what a given agent was authorized to do at 3 a.m.; conversely, a narrow scope with a working audit trail is defensible even where oversight is thin. A second objection is that four requirements per action are impractical at scale. In practice they already exist in pieces --- time-outs, second reads, audit logs, credentialing --- and the contribution is to require them jointly and in advance, rather than discovering after an incident which of them was missing.
+
+\paragraph{Limitations.}
+Three limitations bound the claims. First, the review is purposive rather than systematic, so the corpus is defensible but not exhaustive, and a different search string would have produced a different seventeen. Second, coding was performed by a single coder without a second rater, so no inter-rater reliability can be reported. Third, and most importantly, Phase~2 of the design --- the vignette experiment specified in Section~\ref{sec:protocol} --- has not yet been executed. The claim that shifting an agent from advising to acting reduces willingness to delegate is therefore a hypothesis supported by the literature, not a measurement. Until those data exist, governed delegation should be read as a specification to be tested rather than a finding to be applied.

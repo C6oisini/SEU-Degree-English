@@ -1,44 +1,71 @@
 %% =====================================================================
 %%  4 / 7   Results  结果                                        成员 4
-%%  主要任务：呈现真实得到的结果
-%%    a. 只放测到的数字（准确率/分数/耗时…），解释留给第 5 部分
-%%    b. 主结果：一张表 + 一张图，正文里每张表/图都要被 \ref 引用一次
-%%    c. 消融 / 敏感性 / 个案分析各放一个 \subsection
-%%  篇幅建议：2--3 页；表格用 booktabs + \small，列间距 \tabcolsep 4.8--8pt
+%%  语料编码 + 四个主题 + 交叉结论
 %% =====================================================================
 \section{Results}
 \label{sec:results}
 
-\todo{PART 4 --- Results (Member 4): report what was actually measured, in tables and figures, without interpretation.}
+\paragraph{What the corpus contains.}
+Table~\ref{tab:corpus} codes the seventeen studies. The distribution is itself a result. Nine studies are conceptual, six are benchmark evaluations, one is a clinical observational study and one is an attitude survey. No study reports field data on a delegation decision --- that is, on an occasion when a clinician actually permitted an agent to act and the consequences were observed. The autonomy column is equally narrow: every benchmark study sits at L1 or L2, and the only L3 case is autonomous behaviour inside a simulation.
 
-% ---- 主结果表模板（换成你们的数据）----
-%
-% \begin{table}[t]
-% \centering\small
-% \setlength{\tabcolsep}{6pt}
-% \begin{tabular}{@{}lccc@{}}
-% \toprule
-% Method & Metric A & Metric B & Metric C \\
-% \midrule
-% Baseline            & 00.0 & 00.0 & 00.0 \\
-% \rowcolor{oursrow}[\tabcolsep][\tabcolsep]Ours & 00.0 & 00.0 & 00.0 \\
-% \bottomrule
-% \end{tabular}
-% \caption{\textbf{One-sentence takeaway of the table.} Setting, metric
-% definition, and how many runs are averaged. Best value per column in bold.}
-% \label{tab:main}
-% \end{table}
+\begin{table}[t]
+\centering\footnotesize
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}p{2.7cm}p{3.9cm}p{4.6cm}c p{2.1cm}@{}}
+\toprule
+Study & Setting & Locus of action & Level & Evidence \\
+\midrule
+\citet{topol2019}             & Review of AI in medicine   & None (analysis only)       & L0     & Conceptual \\
+\citet{wang2025baymax}        & Survey of medical agents   & Recommendation             & L1     & Conceptual \\
+\citet{li2024agenthospital}   & Simulated hospital         & Autonomous, in silico      & L3     & Benchmark  \\
+\citet{zhuang2025learning}    & Architecture search        & Recommendation             & L1     & Benchmark  \\
+\citet{jiang2025medagentbench}& Virtual health record      & Acts on record, checked    & L2     & Benchmark  \\
+\citet{schmidgall2024agentclinic} & Simulated consultation  & Recommendation             & L1     & Benchmark  \\
+\citet{gao2026medexagent}     & Clinical examination       & Recommendation             & L1     & Benchmark  \\
+\citet{ma2026activemedagent}  & Multi-turn diagnosis       & Acts, requests tests       & L2     & Benchmark  \\
+\citet{ye2025autonomy}        & Autonomy framework         & Defines levels             & L0--L3 & Conceptual \\
+\citet{habli2020accountability} & Safety and accountability & Acts with confirmation   & L2     & Conceptual \\
+\citet{clayton2025clinicians} & Clinician's diagnostic role & Recommendation            & L1     & Conceptual \\
+\citet{abdulnour2025education}& Supervision training      & Acts with confirmation     & L2     & Conceptual \\
+\citet{ong2026flight}         & Flight rules for AI        & Acts with confirmation     & L2     & Conceptual \\
+\citet{busch2025attitudes}    & Patient attitudes          & Acts with confirmation     & L2     & Attitude   \\
+\citet{budzyn2025deskilling}  & Colonoscopy AI             & Detection aid              & L1     & Clinical   \\
+\citet{natali2025deskilling}  & Deskilling taxonomy        & Spans L1--L3               & L1--L3 & Conceptual \\
+\citet{hunter2024reliance}    & Reliance drills            & Acts with confirmation     & L2     & Conceptual \\
+\bottomrule
+\end{tabular}
+\caption{\textbf{The corpus is conceptual and benchmark-heavy, and no study observes a delegation.} Seventeen studies coded for the locus of action, level of autonomy (after \citealp{ye2025autonomy}) and evidence type.}
+\label{tab:corpus}
+\end{table}
 
-% ---- 建议小节 ----
-%
-% \subsection{Main Results}
-% \label{sec:main}
-% 先给结论句，再指向 Table~\ref{tab:main} 和对应的图。
-%
-% \subsection{Ablation Study}
-% \label{sec:ablations}
-% 每次只改一个因素，逐行累加时在表格里用 "+" 标记。
-%
-% \subsection{Case Study}
-% \label{sec:cases}
-% 一个成功、一个失败，各引一小段原文/日志。
+\subsection{Deskilling}
+The clearest empirical signal is negative. \citet{budzyn2025deskilling} followed endoscopists across centres and found that adenoma detection fell by an absolute 6.0 percentage points after AI assistance was withdrawn, a decline that appeared in assisted clinicians rather than unassisted ones. \citet{natali2025deskilling} show that the phenomenon is not confined to procedural specialties, and assemble a taxonomy in which skill, judgement and vigilance decay at different rates. \citet{hunter2024reliance} supply the measurement instrument the others lack: a drill in which the automation is silently disabled to see whether the human still performs. What the theme establishes is not that assistance is harmful but that its benefit and its cost are carried by different parties at different times.
+
+\subsection{The supervision illusion}
+The second theme concerns timing. Every conceptual source in the corpus assumes that a human reviews the agent's output \citep{habli2020accountability,abdulnour2025education,ong2026flight}. None specifies when that review occurs, and in the benchmark studies it is structurally impossible: the agent acts, and the score is computed afterwards \citep{jiang2025medagentbench}. Oversight therefore defaults to post-hoc auditing, which is a different activity with a different competence. A reviewer who sees a completed action is not deciding whether to permit it; they are deciding whether to reverse it, and reversal is often impossible. The 69.67\% success rate sharpens the point: the remaining 30.33\% of failures are not caught at the moment of action, because nothing is scheduled to catch them there.
+
+\subsection{Accountability diffusion}
+The third theme is a change in the category of error. When a system advises, an error is a prediction that a clinician acted on, and responsibility attaches to the act. When a system acts, the error is an event, and the question becomes which of several parties owned it: the clinician who configured the agent, the vendor who trained it, the institution that deployed it, or no one in particular. \citet{habli2020accountability} argue that this question cannot be answered by improving model performance, because it is not a performance question. \citet{clayton2025clinicians} makes the clinical version of the argument: a diagnosis reached by delegation is not the same diagnosis as one reached by the clinician, even when the labels agree.
+
+\subsection{Trust under uncertainty}
+The fourth theme is that trust is not a single quantity. \citet{busch2025attitudes} find that patient acceptance varies with the task, the degree of human involvement and the perceived stakes, so that a summary statistic for ``trust in medical AI'' conceals the variation that matters. \citet{ong2026flight} draw the operational conclusion: if trust is task-specific, then procedures must be task-specific too, which is why they import aviation's rules rather than a general principle of caution.
+
+\subsection{Synthesis: one missing object}
+Table~\ref{tab:themes} sets the four themes side by side. Each names a different failure, and each failure is the absence of a different element of the same thing: a boundary that states what an agent may do, that can be withdrawn, that can be inspected, and that leaves a competent human behind it. Deskilling is the absence of the last element. The supervision illusion is the absence of the second. Accountability diffusion is the absence of the third. Trust under uncertainty is the absence of the first, because a person cannot calibrate trust in a scope that has never been stated. The themes are therefore not four problems but one problem observed from four positions --- which is what Section~\ref{sec:discussion} turns into a design.
+
+\begin{table}[t]
+\centering\small
+\setlength{\tabcolsep}{6pt}
+\begin{tabular}{@{}p{3.9cm}p{5.0cm}p{5.3cm}@{}}
+\toprule
+Theme & Representative evidence & Element of delegation exposed as missing \\
+\midrule
+Deskilling              & 6.0 percentage-point fall in adenoma detection after withdrawal \citep{budzyn2025deskilling} & Retained unaided skill \\
+Supervision illusion    & 69.67\% benchmark success; review unscheduled \citep{jiang2025medagentbench} & Revocability in flight \\
+Accountability diffusion& Responsibility shifts from prediction to event \citep{habli2020accountability} & Auditability \\
+Trust under uncertainty & Acceptance varies with task, involvement and stakes \citep{busch2025attitudes} & Explicit scope of authority \\
+\bottomrule
+\end{tabular}
+\caption{\textbf{Four themes, one missing object.} Each theme isolates a different element of the same authorization boundary.}
+\label{tab:themes}
+\end{table}

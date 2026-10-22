@@ -1,31 +1,45 @@
 %% =====================================================================
 %%  3 / 7   Methodology  方法                                    成员 3
-%%  主要任务：研究对象、步骤
-%%    a. 研究对象（Research objects）：数据/模型/被试/材料，来源、规模、
-%%       划分（train / val / test）、预处理方式
-%%    b. 研究步骤（Procedure）：按执行顺序写 1→2→3，做到"照做能复现"
-%%    c. 关键设定与超参集中在一张表或一段列表里，别散落在正文
-%%  篇幅建议：2--3 页；公式、算法用 equation / algorithm 环境
+%%  两阶段混合方法：目的性综述 + 情景问卷实验
 %% =====================================================================
 \section{Methodology}
 \label{sec:method}
 
-\todo{PART 3 --- Methodology (Member 3): describe the research objects (data, models, materials) and the procedure step by step, in enough detail to reproduce.}
+\paragraph{Design.}
+This is a mixed-methods study in two phases. Phase~1 is a purposive review that builds the corpus and derives the themes reported in Section~\ref{sec:results}. Phase~2 is a vignette experiment, specified in Section~\ref{sec:protocol}, that tests the advisor-to-agent shift on human judgements. Phase~1 is described first because the themes it produces determine what Phase~2 has to measure.
 
-% ---- 建议小节（按需启用）----
-%
-% \subsection{Research Objects}
-% \label{sec:objects}
-% 数据从哪来、多大、怎么切分、怎么清洗；模型/被试/材料的规格。
-%
-% \subsection{Procedure}
-% \label{sec:procedure}
-% \begin{enumerate}
-%   \item 第一步：输入是什么，做了什么变换，输出是什么。
-%   \item 第二步：...
-%   \item 第三步：...
-% \end{enumerate}
-%
-% \subsection{Implementation Details}
-% \label{sec:impl}
-% 硬件、框架版本、超参、随机种子、运行时间（放表格更清楚）。
+\subsection{Phase 1: Purposive Review}
+\label{sec:review}
+
+\paragraph{Search strategy.}
+We searched PubMed, Web of Science, Scopus, IEEE Xplore, the ACM Digital Library and arXiv for work published between January 2019 and September 2026. The query combined an agent term, a clinical term and a governance term:
+\begin{quote}\small
+\texttt{("medical agent" OR "clinical agent" OR "agentic AI")\\
+AND ("human-in-the-loop" OR oversight OR accountability\\
+OR deskilling OR trust)}
+\end{quote}
+Backward and forward snowballing from the included studies supplemented the database search. We do not claim a systematic review and report no PRISMA diagram: the aim was a defensible and reproducible corpus, not an exhaustive one, and the coding below is reported so that a reader can contest it.
+
+\paragraph{Selection criteria.}
+Studies were included if they (i) concern a system that plans, uses tools or executes multi-step clinical tasks, (ii) discuss the human role, oversight, accountability or trust, and (iii) are peer-reviewed or a preprint with a documented method. They were excluded if they (i) evaluate single-turn question answering with no action, (ii) report no analysis of the human--AI arrangement, or (iii) lie outside clinical medicine. Seventeen studies were retained; they are listed in Table~\ref{tab:corpus}.
+
+\paragraph{Extraction and coding.}
+Each study was coded on four fields: the core claim; the locus of action, that is, who acts on the patient or the record; the level of autonomy, using the four-level scheme of \citet{ye2025autonomy}; and the type of evidence, classified as benchmark, clinical, attitude survey or conceptual. Coding was deductive for the autonomy field and inductive for the thematic analysis. A theme was retained only if at least two independent sources supported it.
+
+\subsection{Phase 2: Vignette Experiment}
+\label{sec:protocol}
+
+\paragraph{Design.}
+A $2\times2$ between-subjects design crosses the role of the system (advisor versus agent) with disclosure (the system is identified as an AI agent versus left unspecified). Participants see four fictional vignettes at one randomly assigned condition, which keeps the vignettes within-subject while preventing contamination across conditions.
+
+\paragraph{Materials.}
+Four vignettes were written to span clinical risk: oral hypoglycaemic adjustment (low), withholding an ACE inhibitor for hyperkalaemia with an urgent electrocardiogram (moderate), automatic triage escalation for chest pain (moderate to high), and an automated adverse-drug-reaction notice sent to a patient (high). Each vignette exists in four versions that differ only in the final sentence, which states either that the system recommends an action or that it has already carried it out, and either names the system as an AI agent or leaves the actor unspecified.
+
+\paragraph{Measures.}
+A manipulation check asks who completed the action. Trust is measured with three seven-point items, willingness to delegate with two (one reverse-scored), responsibility attribution with a single forced-choice item, and perceived risk with one item. Background variables are collected last.
+
+\paragraph{Analysis plan.}
+Trust items are averaged after internal consistency is confirmed (Cronbach's $\alpha>0.7$). Effects are tested with a two-way analysis of variance on role and disclosure, and responsibility attribution with a chi-square test of independence. If fewer than forty valid responses are obtained, the design falls back to independent-samples $t$ tests per vignette, reported with Cohen's $d$.
+
+\paragraph{Ethics.}
+Participation is voluntary and anonymous. No real patient data are used and all vignettes are fictional. The protocol is specified in full here so that the design can be assessed independently of what it eventually measures.

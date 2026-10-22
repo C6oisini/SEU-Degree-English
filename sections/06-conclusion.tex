@@ -1,21 +1,11 @@
 %% =====================================================================
 %%  6 / 7   Conclusion  结论                                    成员 6
-%%  主要任务：回答研究问题、启示
-%%    a. 用一段正面回答第 1 部分提出的研究问题（可直接呼应 \ref{sec:intro}）
-%%    b. 启示 / 未来工作：2--3 条，具体到可执行的方向
-%%    c. 不引入新结果，不出现新图表；全文 1 页以内
 %% =====================================================================
 \section{Conclusion}
 \label{sec:conclusion}
 
-\todo{PART 6 --- Conclusion (Member 6): answer the research question, then implications and future work. No new results here.}
+This paper began from a shift in what clinical AI does: systems that once returned a judgement now execute actions, while the evaluation literature continues to grade them on the judgement. We asked what changes when the unit of analysis moves from the advice to the action. A review of seventeen studies across engineering and human-factors work produced four themes --- deskilling, the supervision illusion, accountability diffusion, and trust under uncertainty --- and the central result is that these are not four problems. They are four views of one missing object: the authorization boundary that would state what an agent may do, allow that permission to be withdrawn, leave a record behind, and preserve a human able to act without it.
 
-% ---- 写作骨架 ----
-%
-% 第一段：本文做了什么（一句）→ 得到什么（一句）→ 回答了
-% Section~\ref{sec:intro} 的哪个问题（一句）。
-%
-% 第二段：启示与未来工作。每条一句，例如：
-% (i) 把方法用到更大规模/更多领域；
-% (ii) 换一种评价协议复核结论；
-% (iii) 放松本文的哪一条假设。
+The answer to the question posed in Section~\ref{sec:intro} is therefore that the human--AI relationship in medicine is not primarily a matter of trust, and cannot be settled by improving accuracy. It is a matter of authority: who may act, within what scope, on whose permission, and with what residue of responsibility when the action goes wrong. Governed delegation makes those questions answerable in advance rather than after an incident, and per delegation rather than per system.
+
+Three directions follow. The vignette experiment in Section~\ref{sec:protocol} should be run, so that the advisor-to-agent shift is measured rather than assumed; the four requirements should be operationalised into an audit schema a deployment review can check; and the retention requirement should be tested against real training programmes, since its violation is invisible until the assistance is removed. What the field needs next is not a better benchmark but a better contract.

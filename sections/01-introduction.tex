@@ -1,35 +1,27 @@
 %% =====================================================================
 %%  1 / 7   Introduction  引言                                   成员 1
-%%  主要任务：研究背景、问题
-%%    a. 研究背景：这个问题为什么重要；目前的主流做法/技术路线是什么
-%%    b. 研究问题：用 1--2 句话给出本文要回答的问题，并说明它为什么尚未解决
-%%    c. 本文做法：一句话概括方法；再用 3--4 条 bullet 写出贡献
-%%  篇幅建议：1--1.5 页
 %% =====================================================================
 \section{Introduction}
 \label{sec:intro}
 
-\todo{PART 1 --- Introduction (Member 1): state the background, then the research question, then 3--4 contribution bullets.}
+\paragraph{Background.}
+Clinical artificial intelligence (AI) has spent a decade being useful in the passive voice. Systems read images, flag physiological deterioration and rank differential diagnoses, but they return a judgement and stop. That division of labour was stable enough to be codified in regulation and in training: the clinician decided, the software advised, and the interface between them was a screen. Two developments have disturbed it. The first is capability. Large language models have been wrapped into agents that plan, call external tools, write to records and execute multi-step procedures, so that the output of a clinical system is increasingly not a recommendation but a completed action \citep{wang2025baymax}. The second is institutional. Such systems are being deployed into workflows whose volume makes case-by-case review impractical, and they are marketed on the promise that review is no longer needed.
 
-% ---- 写作骨架（取消注释后填写；不需要的段落直接删掉）----
-%
-% \paragraph{Background.}
-% 一句话点题：这个领域在做什么、为什么现在重要。
-%
-% \paragraph{Problem.}
-% 现有路线各有什么代价，本文要回答的问题是什么。
-% 可在这里放一张动机图（figs/ 下新建）：
-%
-% \begin{figure}[t]
-%   \centering
-%   \includegraphics[width=\textwidth]{figs/motivation.pdf}
-%   \caption{\textbf{One-sentence takeaway.} What the reader should see.}
-%   \label{fig:teaser}
-% \end{figure}
-%
-% \paragraph{Contributions.}
-% \begin{itemize}
-%   \item ...
-%   \item ...
-%   \item ...
-% \end{itemize}
+\paragraph{Problem.}
+Evaluation has not changed to match. Benchmarks measure task success, and success is reported as if it were the only property that matters. On \textsc{MedAgentBench}, the most widely used virtual electronic health record environment, the strongest model completes 69.67\% of tasks \citep{jiang2025medagentbench}. A system that fails roughly one task in three is a legitimate object of study; it is not an obvious object of delegation. Yet the literature reports the number and leaves the delegation unexamined.
+
+Two research communities describe the same phenomenon without meeting. Engineering work asks how to build agents that act correctly, and improves architectures, memory and tool use. Human-factors work asks what happens to people who work alongside automation, and has documented complacency, skill decay and misplaced mistrust for four decades \citep{parasuraman2010}. Neither asks the question that now matters: under what conditions may an agent be authorized to act at all?
+
+A terminological looseness compounds the problem. ``Medical agent'' is used for systems ranging from a single-turn question answerer to an autonomous ward-round simulator. Without a stable referent, claims about autonomy cannot be compared, and a gain measured at one level is read as evidence about another.
+
+\paragraph{Contributions.}
+This paper makes four contributions.
+\begin{itemize}
+  \item We give a scoping definition of a medical agent --- planning, tool use and multi-step execution, as distinct from single-turn question answering --- and use it to bound the corpus.
+  \item We conduct a purposive review of seventeen studies across six databases, placing engineering and human-factors sources in one corpus and coding each for its locus of action and level of autonomy.
+  \item We identify four themes --- deskilling, the supervision illusion, accountability diffusion, and trust under uncertainty --- and show that all four are symptoms of one missing object: an explicit authorization boundary.
+  \item We propose \emph{governed delegation}, which specifies four requirements for any agent permitted to act, and set out a $2\times2$ vignette protocol that tests the advisor-to-agent shift directly.
+\end{itemize}
+
+\paragraph{Roadmap.}
+Section~\ref{sec:litreview} reviews the three literatures and states the gap. Section~\ref{sec:method} describes the review protocol and the experimental design. Section~\ref{sec:results} reports the coding and the four themes. Section~\ref{sec:discussion} develops governed delegation and answers two objections, and Section~\ref{sec:conclusion} concludes.
