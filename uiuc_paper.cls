@@ -2,7 +2,6 @@
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{uiuc_paper}[2025/02/22 UIUC Paper Template v3]
 \LoadClassWithOptions{article}
-\pdfoutput=1
 
 %% ======== Layout ========
 \RequirePackage[top=2.2cm, bottom=2.5cm, left=2.5cm, right=2.5cm, columnsep=0.65cm]{geometry}
